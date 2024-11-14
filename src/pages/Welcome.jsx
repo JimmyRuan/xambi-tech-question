@@ -15,7 +15,7 @@ function Welcome() {
                     </Link>
                 </li>
                 <li>
-                    <Link to="/form-with-everything" className="text-indigo-600 underline">
+                    <Link to="/pill-list-page" className="text-indigo-600 underline">
                         Go to Form with new tag
                     </Link>
                 </li>

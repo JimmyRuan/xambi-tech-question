@@ -25,6 +25,7 @@ export const EditEntryType = {
   Date: 'Date',
   Select: 'Select',
   Showcase: 'Showcase',
+  PillList: 'PillList',
 }
 
 export const ValidationType = {
@@ -230,6 +231,26 @@ export function EditForm(props: EditFormProps) {
   }, [props.editEntries]);
 
   const [checkboxFieldValue, setCheckboxFieldValue] = useState(false);
+
+  const [pillList, setPillList] = useState({});
+  const addPill = (attribute, text) => {
+    if (!text.trim()) return;
+
+    setPillList((prev) => ({
+      ...prev,
+      [attribute]: [...(prev[attribute] || []), text.trim()],
+    }));
+  };
+
+  const removePill = (attribute, index) => {
+    setPillList((prev) => ({
+      ...prev,
+      [attribute]: prev[attribute].filter((_, i) => i !== index),
+    }));
+  };
+
+  console.log("I am here at 252", pillList);
+
 
   return (
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative lg:pt-5 text-left">
@@ -1222,27 +1243,77 @@ export function EditForm(props: EditFormProps) {
 
                       </div>
                     );
+                  } else if (editEntry.type === EditEntryType.PillList) {
+                    return (
+                        <div key={index} className="col-span-6">
+                          <label className="block text-sm font-medium text-gray-700">{editEntry.attributeName}</label>
+                          <div className="border rounded-md px-2 py-1 mt-2 flex items-center">
+                            <div className="flex flex-wrap gap-2 mb-2">
+                              {(pillList[editEntry.attribute] || []).map((pill, i) => (
+                                  <div
+                                      key={i}
+                                      className="flex items-center space-x-1 px-3 py-1 bg-gray-100 border border-gray-300 rounded-md"
+                                  >
+                                    <span className="text-blue-500 font-medium">{pill}</span>
+                                    <button
+                                        type="button"
+                                        className="text-gray-400 hover:text-gray-600 focus:outline-none"
+                                        onClick={() => removePill(editEntry.attribute, i)}
+                                    >
+                                      <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          className="h-5 w-5 font-bold"
+                                          fill="none"
+                                          viewBox="0 0 24 24"
+                                          stroke="currentColor"
+                                          strokeWidth={4}
+                                      >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M6 18L18 6M6 6l12 12"
+                                        />
+                                      </svg>
+                                    </button>
+                                  </div>
+                              ))}
+                            </div>
+                            <input
+                                type="text"
+                                className="border-none outline-none focus:ring-0 ml-2 flex-grow"
+                                placeholder="Type and press enter"
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    addPill(editEntry.attribute, e.target.value);
+                                    e.target.value = '';
+                                  }
+                                }}
+                            />
+                          </div>
+                        </div>
+                    );
                   }
                 })
               }
-            </div >
+            </div>
           </div>
         </div>
 
         <div className="pt-5">
           <div className="flex justify-end">
             <button
-              type="button"
-              className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              onClick={() => {
-                navigate(-1);
-              }}
+                type="button"
+                className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                onClick={() => {
+                  navigate(-1);
+                }}
             >
               Cancel
             </button>
             <button
-              type="submit"
-              className="ml-3 inline-flex rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                type="submit"
+                className="ml-3 inline-flex rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               {props.buttonText ? props.buttonText : "Save"}
             </button>
