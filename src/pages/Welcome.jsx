@@ -19,6 +19,11 @@ function Welcome() {
                         Go to Form with new tag
                     </Link>
                 </li>
+                <li>
+                    <Link to="/item-list" className="text-indigo-600 underline">
+                        Go to Form with Item List
+                    </Link>
+                </li>
             </ul>
         </div>
     );

@@ -249,9 +249,6 @@ export function EditForm(props: EditFormProps) {
     }));
   };
 
-  console.log("I am here at 252", pillList);
-
-
   return (
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative lg:pt-5 text-left">
       <form className="space-y-8 divide-y divide-gray-200"
